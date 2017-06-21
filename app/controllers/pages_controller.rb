@@ -1,10 +1,15 @@
 class PagesController < ApplicationController
 
   def index
-    @people = People.all
+    @people = Person.all
   end 
 
   def create
-    @person = Person.new
+    @person = Person.new(name: params[:name], bio: params[:bio])
+    if @person.save
+      render 'show.json.jbuilder'
+    else 
+      render json: { errors: @person.errors.full_messages }, status: 422
+    end
   end
 end
